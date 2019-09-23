@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "fireTest", "fireTest.exe", "{4E3E2380-BDC9-4EEC-BE1F-5C1CE92B002C}"
+	ProjectSection(DebuggerProjectSystem) = preProject
+		PortSupplier = 00000000-0000-0000-0000-000000000000
+		Executable = E:\학부수업\3학년 1학기\네트워크게이밍\NGP_150G-FireTestCommQ\NGP 150G-FireTestCommQ\Debug\fireTest.exe
+		RemoteMachine = SHSS
+		StartingDirectory = E:\학부수업\3학년 1학기\네트워크게이밍\NGP_150G-FireTestCommQ\NGP 150G-FireTestCommQ\Debug
+		Environment = 기본값
+		LaunchingEngine = 00000000-0000-0000-0000-000000000000
+		UseLegacyDebugEngines = No
+		LaunchSQLEngine = No
+		AttachLaunchAction = No
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E3E2380-BDC9-4EEC-BE1F-5C1CE92B002C}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

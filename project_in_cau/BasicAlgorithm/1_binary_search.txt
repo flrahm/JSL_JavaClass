@@ -1,0 +1,45 @@
+//20113574 설현수//
+
+#include <iostream>
+
+#define size 100
+
+using namespace std;
+
+int binSearch(int arr[], int a, int b, int c);
+
+int main() {
+
+	int arr[size];
+
+	for (int i = 0; i < size; i++)
+		arr[i] = i;
+
+
+
+	int search, result;
+
+	cout << "찾으실 숫자를 입력하세요 : ";
+	cin >> search;
+
+	result = binSearch(arr, search, 0, size - 1);
+
+	cout << endl << "찾으신 숫자는 " << result + 1 << "번 째에 있습니다" << endl;
+
+
+}
+
+int binSearch(int arr[], int search, int left, int right) {
+
+	int mid = (left + right) / 2;
+
+
+	if (arr[mid] == search)
+		return mid;
+	else if (arr[mid] > search)
+		return binSearch(arr, search, left, mid - 1);
+	else
+		return binSearch(arr, search, mid + 1, right);
+
+
+}

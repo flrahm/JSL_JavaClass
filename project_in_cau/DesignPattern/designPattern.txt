@@ -1,0 +1,1129 @@
+
+factory method
+
+//Our pizzas
+function HamAndMushroomPizza(){
+  var price = 8.50;
+  this.getPrice = function(){
+    return price;
+  }
+}
+
+function DeluxePizza(){
+  var price = 10.50;
+  this.getPrice = function(){
+    return price;
+  }
+}
+
+function SeafoodPizza(){
+  var price = 11.50;
+  this.getPrice = function(){
+    return price;
+  }
+}
+
+//Pizza Factory
+function PizzaFactory(){
+  this.createPizza = function(type){
+     switch(type){
+      case "Ham and Mushroom":
+        return new HamAndMushroomPizza();
+      case "DeluxePizza":
+        return new DeluxePizza();
+      case "Seafood Pizza":
+        return new SeafoodPizza();
+      default:
+          return new DeluxePizza();
+     }
+  }
+}
+
+//Usage
+var pizzaPrice = new PizzaFactory().createPizza("Ham and Mushroom").getPrice();
+alert(pizzaPrice);
+
+
+
+
+
+
+
+
+
+
+Observer pattern
+/* 파일명 : EventSource.java */
+
+package obs;
+import java.util.Observable; // 이 부분이 옵저버에게 신호를 보내는 주체입니다.
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class EventSource extends Observable implements Runnable
+{
+    public void run()
+    {
+        try
+        {
+            final InputStreamReader isr = new InputStreamReader( System.in );
+            final BufferedReader br = new BufferedReader( isr );
+            while( true )
+            {
+                final String response = br.readLine();
+                setChanged();
+                notifyObservers( response );
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+}
+
+/* 파일명: ResponseHandler.java */
+
+package obs;
+
+import java.util.Observable;
+import java.util.Observer; /* 여기가 옵저버 */
+
+public class ResponseHandler implements Observer
+{
+    private String resp;
+    public void update (Observable obj, Object arg)
+    {
+        if (arg instanceof String)
+        {
+            resp = (String) arg;
+            System.out.println("\nReceived Response: "+ resp );
+        }
+    }
+}
+
+
+
+
+
+
+
+
+/* 파일명 : myapp.java */
+/* 여기서부터가 프로그램 시작점 */
+
+package obs;
+
+public class MyApp
+{
+    public static void main(String args[])
+    {
+        System.out.println("Enter Text >");
+
+        // 이벤트 발행 주체를 생성함 - stdin으로부터 문자열을 입력받음
+        final EventSource evSrc = new EventSource();
+
+        // 옵저버를 생성함
+        final ResponseHandler respHandler = new ResponseHandler();
+
+        // 옵저버가 발행 주체가 발행하는 이벤트를 구독하게 함
+        evSrc.addObserver( respHandler );
+
+        // 이벤트를 발행시키는 쓰레드 시작
+        Thread thread = new Thread(evSrc);
+        thread.start();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Decorator pattern
+// the Window interface
+interface Window {
+    public void draw(); // draws the Window
+    public String getDescription(); // returns a description of the Window
+}
+
+// implementation of a simple Window without any scrollbars
+class SimpleWindow implements Window {
+    public void draw() {
+        // draw window
+    }
+
+    public String getDescription() {
+        return "simple window";
+    }
+}
+
+
+
+/* 아래의 클래스들은 모두 window 클래스의 데코레이터들을 포함 */
+//abstract decorator class - note that it implements Window
+abstract class WindowDecorator implements Window {
+ protected Window decoratedWindow; // the Window being decorated
+
+ public WindowDecorator (Window decoratedWindow) {
+     this.decoratedWindow = decoratedWindow;
+ }
+}
+
+//the first concrete decorator which adds vertical scrollbar functionality
+class VerticalScrollBarDecorator extends WindowDecorator {
+ public VerticalScrollBarDecorator (Window decoratedWindow) {
+     super(decoratedWindow);
+ }
+
+ public void draw() {
+     drawVerticalScrollBar();
+     decoratedWindow.draw();
+ }
+
+ private void drawVerticalScrollBar() {
+     // draw the vertical scrollbar
+ }
+
+ public String getDescription() {
+     return decoratedWindow.getDescription() + ", including vertical scrollbars";
+ }
+}
+
+
+
+
+
+//the second concrete decorator which adds horizontal scrollbar functionality
+class HorizontalScrollBarDecorator extends WindowDecorator {
+ public HorizontalScrollBarDecorator (Window decoratedWindow) {
+     super(decoratedWindow);
+ }
+
+ public void draw() {
+     drawHorizontalScrollBar();
+     decoratedWindow.draw();
+ }
+
+ private void drawHorizontalScrollBar() {
+     // draw the horizontal scrollbar
+ }
+
+ public String getDescription() {
+     return decoratedWindow.getDescription() + ", including horizontal scrollbars";
+ }
+}
+
+
+/* window 인스턴스 생성 */
+public class DecoratedWindowTest {
+    public static void main(String[] args) {
+        // create a decorated Window with horizontal and vertical scrollbars
+        Window decoratedWindow = new HorizontalScrollBarDecorator (
+                new VerticalScrollBarDecorator(new SimpleWindow()));
+
+        // print the Window's description
+        System.out.println(decoratedWindow.getDescription());
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Factory method pattern
+
+//Our pizzas
+function HamAndMushroomPizza(){
+  var price = 8.50;
+  this.getPrice = function(){
+    return price;
+  }
+}
+
+function DeluxePizza(){
+  var price = 10.50;
+  this.getPrice = function(){
+    return price;
+  }
+}
+
+function SeafoodPizza(){
+  var price = 11.50;
+  this.getPrice = function(){
+    return price;
+  }
+}
+
+//Pizza Factory
+function PizzaFactory(){
+  this.createPizza = function(type){
+     switch(type){
+      case "Ham and Mushroom":
+        return new HamAndMushroomPizza();
+      case "DeluxePizza":
+        return new DeluxePizza();
+      case "Seafood Pizza":
+        return new SeafoodPizza();
+      default:
+          return new DeluxePizza();
+     }
+  }
+}
+
+//Usage
+var pizzaPrice = new PizzaFactory().createPizza("Ham and Mushroom").getPrice();
+alert(pizzaPrice);
+
+
+
+
+
+
+
+command pattern
+
+/*the Invoker class*/
+public class Switch {
+    private Command flipUpCommand;
+    private Command flipDownCommand;
+
+    public Switch(Command flipUpCmd,Command flipDownCmd){
+        this.flipUpCommand=flipUpCmd;
+        this.flipDownCommand=flipDownCmd;
+    }
+
+    public void flipUp(){
+         flipUpCommand.execute();
+    }
+
+    public void flipDown(){
+         flipDownCommand.execute();
+    }
+}
+
+/*Receiver class*/
+
+public class Light{
+     public Light(){  }
+
+     public void turnOn(){
+        System.out.println("The light is on");
+     }
+
+     public void turnOff(){
+        System.out.println("The light is off");
+     }
+}
+
+
+/*the Command interface*/
+
+public interface Command{
+    void execute();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*the Command for turning on the light*/
+
+public class TurnOnLightCommand implements Command{
+   private Light theLight;
+
+   public TurnOnLightCommand(Light light){
+        this.theLight=light;
+   }
+
+   public void execute(){
+      theLight.turnOn();
+   }
+}
+
+/*the Command for turning off the light*/
+
+public class TurnOffLightCommand implements Command{
+   private Light theLight;
+
+   public TurnOffLightCommand(Light light){
+        this.theLight=light;
+   }
+
+   public void execute(){
+      theLight.turnOff();
+   }
+}
+
+/*The test class*/
+public class TestCommand{
+   public static void main(String[] args){
+       Light light=new Light();
+       Command switchUp=new TurnOnLightCommand(light);
+       Command switchDown=new TurnOffLightCommand(light);
+
+       Switch s=new Switch(switchUp,switchDown);
+
+       s.flipUp();
+       s.flipDown();
+   }
+}
+
+
+
+
+
+
+
+
+
+
+Adaptor pattern : class adaptor
+/**
+ * Java code sample
+ */
+
+/* the client class should instantiate adapter objects */
+/* by using a reference of this type */
+interface Stack<T>
+{
+  void push (T o);
+  T pop ();
+  T top ();
+}
+
+/* DoubleLinkedList is the adaptee class */
+class DList<T>
+{
+  public void insert (DNode pos, T o) { ... }
+  public void remove (DNode pos) { ... }
+
+  public void insertHead (T o) { ... }
+  public void insertTail (T o) { ... }
+
+  public T removeHead () { ... }
+  public T removeTail () { ... }
+
+  public T getHead () { ... }
+  public T getTail () { ... }
+}
+
+/* Adapt DList class to Stack interface is the adapter class */
+class DListImpStack<T> extends DList<T> implements Stack<T>
+{
+  public void push (T o) {
+    insertTail (o);
+  }
+
+  public T pop () {
+    return removeTail ();
+  }
+
+  public T top () {
+    return getTail ();
+  }
+}
+
+
+
+
+
+
+
+Adaptor pattern : object adaptor
+
+# Python code sample
+class Target(object):
+    def specific_request(self):
+        return 'Hello Adapter Pattern!'
+
+class Adapter(object):
+    def __init__(self, adaptee):
+        self.adaptee = adaptee
+
+    def request(self):
+        return self.adaptee.specific_request()
+
+client = Adapter(Target())
+print client.request()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Façade pattern
+
+아래 Java 코드 예제는 사용자(you)가 퍼사드(컴퓨터)를 통해 컴퓨터 내부의 부품(CPU, HDD) 등을 접근한다는 내용의 추상적인 예제이다.
+/* Complex parts */
+
+class CPU {
+	public void freeze() { ... }
+	public void jump(long position) { ... }
+	public void execute() { ... }
+}
+
+class Memory {
+	public void load(long position, byte[] data) {
+		...
+	}
+}
+
+class HardDrive {
+	public byte[] read(long lba, int size) {
+		...
+	}
+}
+
+/* Façade */
+
+class Computer {
+	public void startComputer() {
+        CPU cpu = new CPU();
+        Memory memory = new Memory();
+        HardDrive hardDrive = new HardDrive();
+		cpu.freeze();
+		memory.load(BOOT_ADDRESS, hardDrive.read(BOOT_SECTOR, SECTOR_SIZE));
+		cpu.jump(BOOT_ADDRESS);
+		cpu.execute();
+	}
+}
+
+/* Client */
+
+class You {
+	public static void main(String[] args) throws ParseException {
+		Computer facade = /* grab a facade instance */;
+		facade.startComputer();
+	}
+}
+
+
+
+
+Template method
+
+abstract class Generalization {
+    // 1. Standardize the skeleton of an algorithm in a "template" method
+    void findSolution() {
+        stepOne();
+        stepTwo();
+        stepThr();
+        stepFor();
+    }
+    // 2. Common implementations of individual steps are defined in base class
+    private void stepOne() {
+        System.out.println("Generalization.stepOne");
+    }
+    // 3. Steps requiring peculiar implementations are "placeholders" in the base class
+    abstract void stepTwo();
+    abstract void stepThr();
+
+    void stepFor() {
+        System.out.println( "Generalization.stepFor" );
+    }
+}
+
+abstract class Specialization extends Generalization {
+    // 4. Derived classes can override placeholder methods
+    // 1. Standardize the skeleton of an algorithm in a "template" method
+    protected void stepThr() {
+        step3_1();
+        step3_2();
+        step3_3();
+    }
+    // 2. Common implementations of individual steps are defined in base class
+    private void step3_1() {
+        System.out.println("Specialization.step3_1");
+    }
+    // 3. Steps requiring peculiar implementations are "placeholders" in the base class
+    abstract protected void step3_2();
+
+    private void step3_3() {
+        System.out.println("Specialization.step3_3");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+class Realization extends Specialization {
+    // 4. Derived classes can override placeholder methods
+    protected void stepTwo() {
+        System.out.println("Realization.stepTwo");
+    }
+
+    protected void step3_2() {
+        System.out.println( "Realization.step3_2");
+    }
+
+    // 5. Derived classes can override implemented methods
+    // 6. Derived classes can override and "call back to" base class methods
+    protected void stepFor() {
+        System.out.println("Realization.stepFor");
+        super.stepFor();
+    }
+}
+
+public class TemplateMethodDemo {
+    public static void main(String[] args) {
+        Generalization algorithm = new Realization();
+        algorithm.findSolution();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iterator pattern
+
+
+public interface Aggregate {
+    public abstract Iterator iterator();
+   }
+
+
+public interface Iterator{
+    public abstract boolean hasNext();
+    public abstract Object next();
+}
+
+
+
+public class Book{
+    private String name;
+    public Book(String name){
+        this.name = name;
+    }
+    public String getName(){
+        return name;
+    }
+}
+
+
+
+
+public class BookShelf implements Aggregate{
+    private Book[] books;
+    private int last = 0;
+    public BookShelf(int maxsize){
+        this.books = new Book[maxsize];
+    }
+    public Book getBookAt(int index){
+        return books[index];
+    }
+    public void appendBook(Book book){
+        this.books[last] = book;
+        last++;
+    }
+    public int getLength(){
+        return last;
+    }
+    public Iterator iterator(){
+        return new BookShelfIterator(this);
+    }
+}
+
+
+
+
+
+
+
+public class BookShelfIterator implements Iterator{
+    private BookShelf booShelf;
+    private int index;
+    public BookShelfIterator(BookShelf bookShelf){
+        this.bookShelf=bookshelf;
+        this.index = 0;
+    }
+    public boolean hasNext(){
+        if(index<bookShelf.getLength()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public Object next(){
+        book = bookShelf.getBookAt(index);
+        index++;
+        return book;
+    }
+}
+
+
+
+
+public class Main {
+    public static void main(String[] args){
+        BookShlf bookShelf = new BookShelf(4);
+        bookShelf.appendBook(new Book("Around the World in 80"));
+        bookShelf.appendBook(new Book("Bible"));
+        bookShelf.appendBook(new Book("Cinderella"));
+        bookShelf.appendBook(new Book("Daddy-Long-Legs"));
+        Iterator it = bookShelf.iterator();
+        while(it.hasNext()){
+            Book book = (Book)it.next();
+            System.out.println(book.getName());
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+Composite pattern
+
+
+
+import java.util.List;
+import java.util.ArrayList;
+
+/** "Component" */
+interface Graphic {
+
+    //Prints the graphic.
+    public void print();
+
+}
+
+/** "Composite" */
+class CompositeGraphic implements Graphic {
+
+    //Collection of child graphics.
+    private List<Graphic> mChildGraphics = new ArrayList<Graphic>();
+
+    //Prints the graphic.
+    public void print() {
+        for (Graphic graphic : mChildGraphics) {
+            graphic.print();
+        }
+    }
+
+    //Adds the graphic to the composition.
+    public void add(Graphic graphic) {
+        mChildGraphics.add(graphic);
+    }
+
+    //Removes the graphic from the composition.
+    public void remove(Graphic graphic) {
+        mChildGraphics.remove(graphic);
+    }
+
+}
+
+
+/** "Leaf" */
+class Ellipse implements Graphic {
+
+    //Prints the graphic.
+    public void print() {
+        System.out.println("Ellipse");
+    }
+
+}
+
+
+
+
+
+/** Client */
+public class Program {
+
+    public static void main(String[] args) {
+        //Initialize four ellipses
+        Ellipse ellipse1 = new Ellipse();
+        Ellipse ellipse2 = new Ellipse();
+        Ellipse ellipse3 = new Ellipse();
+        Ellipse ellipse4 = new Ellipse();
+
+        //Initialize three composite graphics
+        CompositeGraphic graphic = new CompositeGraphic();
+        CompositeGraphic graphic1 = new CompositeGraphic();
+        CompositeGraphic graphic2 = new CompositeGraphic();
+
+        //Composes the graphics
+        graphic1.add(ellipse1);
+        graphic1.add(ellipse2);
+        graphic1.add(ellipse3);
+
+        graphic2.add(ellipse4);
+
+        graphic.add(graphic1);
+        graphic.add(graphic2);
+
+        //Prints the complete graphic (four times the string "Ellipse").
+        graphic.print();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mediator pattern
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+//Colleague interface
+interface Command {
+    void execute();
+}
+
+//Abstract Mediator
+interface Mediator {
+    void book();
+    void view();
+    void search();
+    void registerView(BtnView v);
+    void registerSearch(BtnSearch s);
+    void registerBook(BtnBook b);
+    void registerDisplay(LblDisplay d);
+}
+
+//Concrete mediator
+class ParticipantMediator implements Mediator {
+
+    BtnView btnView;
+    BtnSearch btnSearch;
+    BtnBook btnBook;
+    LblDisplay show;
+
+    //....
+    public void registerView(BtnView v) {
+        btnView = v;
+    }
+
+    public void registerSearch(BtnSearch s) {
+        btnSearch = s;
+    }
+
+    public void registerBook(BtnBook b) {
+        btnBook = b;
+    }
+
+    public void registerDisplay(LblDisplay d) {
+        show = d;
+    }
+
+
+
+
+    public void book() {
+        btnBook.setEnabled(false);
+        btnView.setEnabled(true);
+        btnSearch.setEnabled(true);
+        show.setText("booking...");
+    }
+
+    public void view() {
+        btnView.setEnabled(false);
+        btnSearch.setEnabled(true);
+        btnBook.setEnabled(true);
+        show.setText("viewing...");
+    }
+
+    public void search() {
+        btnSearch.setEnabled(false);
+        btnView.setEnabled(true);
+        btnBook.setEnabled(true);
+        show.setText("searching...");
+    }
+
+}
+
+//A concrete colleague
+class BtnView extends JButton implements Command {
+
+    Mediator med;
+
+    BtnView(ActionListener al, Mediator m) {
+        super("View");
+        addActionListener(al);
+        med = m;
+        med.registerView(this);
+    }
+
+    public void execute() {
+        med.view();
+    }
+
+}
+
+//A concrete colleague
+class BtnSearch extends JButton implements Command {
+    Mediator med;
+
+    BtnSearch(ActionListener al, Mediator m) {
+        super("Search");
+        addActionListener(al);
+        med = m;
+        med.registerSearch(this);
+    }
+
+    public void execute() {
+        med.search();
+    }
+
+}
+
+//A concrete colleague
+class BtnBook extends JButton implements Command {
+
+    Mediator med;
+
+    BtnBook(ActionListener al, Mediator m) {
+        super("Book");
+        addActionListener(al);
+        med = m;
+        med.registerBook(this);
+    }
+
+    public void execute() {
+        med.book();
+    }
+
+}
+
+class LblDisplay extends JLabel {
+
+    Mediator med;
+
+    LblDisplay(Mediator m) {
+        super("Just start...");
+        med = m;
+        med.registerDisplay(this);
+        setFont(new Font("Arial", Font.BOLD, 24));
+    }
+
+}
+
+class MediatorDemo extends JFrame implements ActionListener {
+
+    Mediator med = new ParticipantMediator();
+
+    MediatorDemo() {
+        JPanel p = new JPanel();
+        p.add(new BtnView(this, med));
+        p.add(new BtnBook(this, med));
+        p.add(new BtnSearch(this, med));
+        getContentPane().add(new LblDisplay(med), "North");
+        getContentPane().add(p, "South");
+        setSize(400, 200);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        Command comd = (Command) ae.getSource();
+        comd.execute();
+    }
+
+    public static void main(String[] args) {
+        new MediatorDemo();
+    }
+
+}
+
+Visitor pattern
+
+interface CarElementVisitor {
+    void visit(Wheel wheel);
+    void visit(Engine engine);
+    void visit(Body body);
+    void visit(Car car);
+}
+
+interface CarElement {
+    void accept(CarElementVisitor visitor); // CarElements have to provide accept().
+}
+
+class Wheel implements CarElement {
+    private String name;
+
+    public Wheel(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void accept(CarElementVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+class Engine implements CarElement {
+    public void accept(CarElementVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+class Body implements CarElement {
+    public void accept(CarElementVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+class Car implements CarElement{
+    CarElement[] elements;
+
+    public CarElement[] getElements() {
+        return elements.clone(); // Return a copy of the array of references.
+    }
+
+    public Car() {
+        this.elements = new CarElement[]
+          { new Wheel("front left"), new Wheel("front right"),
+            new Wheel("back left") , new Wheel("back right"),
+            new Body(), new Engine() };
+    }
+
+    public void accept(CarElementVisitor visitor) {
+        for(CarElement element : this.getElements()) {
+            element.accept(visitor);
+        }
+        visitor.visit(this);
+    }
+}
+
+class CarElementPrintVisitor implements CarElementVisitor {
+    public void visit(Wheel wheel) {
+        System.out.println("Visiting "+ wheel.getName()
+                            + " wheel");
+    }
+
+    public void visit(Engine engine) {
+        System.out.println("Visiting engine");
+    }
+
+    public void visit(Body body) {
+        System.out.println("Visiting body");
+    }
+
+    public void visit(Car car) {
+        System.out.println("Visiting car");
+    }
+}
+
+class CarElementDoVisitor implements CarElementVisitor {
+    public void visit(Wheel wheel) {
+        System.out.println("Kicking my "+ wheel.getName() + " wheel");
+    }
+
+    public void visit(Engine engine) {
+        System.out.println("Starting my engine");
+    }
+
+    public void visit(Body body) {
+        System.out.println("Moving my body");
+    }
+
+    public void visit(Car car) {
+        System.out.println("Starting my car");
+    }
+}
+
+public class VisitorDemo {
+    static public void main(String[] args){
+        Car car = new Car();
+        car.accept(new CarElementPrintVisitor());
+        car.accept(new CarElementDoVisitor());
+    }
+}
+

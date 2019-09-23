@@ -1,0 +1,155 @@
+//20113574 ¼³Çö¼ö//
+
+#include <iostream>
+#include <time.h>
+
+#define SWAP(a,b) temp = a; a = b; b = temp;
+
+#define MAX 2000
+#define num 2000
+
+using namespace std;
+
+void bouble(int *arr, int n);
+void selection(int *arr, int n);
+void insertion(int *arr, int n);
+
+clock_t current_tick = clock();
+double current_sec = current_tick / CLOCKS_PER_SEC;
+
+int main() {
+	clock_t beginT, endT;
+
+	////////////////////make arr/////////////////
+
+	int arr[num];
+	long seed;
+	seed = time(NULL);
+	srand(seed);
+
+
+	int a = 100;
+
+	for (int i = 0; i < num; i++)
+	{
+		a = rand() % MAX;
+		arr[i] = a;
+
+	}
+
+	/////////////////////sort//////////////////
+
+	cout << "choose sorting algorithm" << endl;
+	cout << "1 : bouble    2: selection    3: insertion" << endl;
+
+	int choose;
+	cin >> choose;
+
+	cout << endl;
+
+
+	beginT = clock();
+
+
+
+	switch (choose) {
+	case 1: bouble(arr, num); break;
+	case 2: selection(arr, num); break;
+	case 3: insertion(arr, num); break;
+
+	}
+
+
+
+	endT = clock();
+
+
+
+	/////////////////////print////////////////////
+
+	for (int i = 0; i < num - 1; i++)
+	{
+		cout << arr[i] << " ";
+		if (i % 10 == 0 && i > 1)
+			cout << endl;
+
+	}
+
+
+	cout << endl << endl;
+
+
+	cout << "running time is : " << (double)(endT - beginT) / CLOCKS_PER_SEC << endl;
+
+	return 0;
+
+}
+
+
+
+
+
+void bouble(int *arr, int n) {
+
+	int temp = 0;
+
+	for (int i = 0; i < n - 1; i++) {
+		for (int j = i + 1; j <= n - 1; j++) {
+			if (arr[j] < arr[i])
+			{
+				swap(arr[j], arr[i]);
+			}
+		}
+	}
+
+}
+
+void selection(int *arr, int n) {
+
+
+	int last;
+
+	for (int i = n - 1; i >= 0; i--) {
+		last = i;
+
+		for (int j = i - 1; j >= 0; j--) {
+			if (arr[j] > arr[last])
+				last = j;
+		}
+
+		swap(arr[i], arr[last]);
+
+	}
+}
+
+
+
+void insertion(int *arr, int n) {
+
+	int copy;
+
+	for (int i = 1; i < n - 1; i++) {
+
+		copy = arr[i];
+
+		for (int j = i ; j > 0; j--) {   
+
+			if (arr[j - 1] > copy) {
+
+				arr[j] = arr[j - 1];
+				if (j == 1) {
+					arr[j - 1] = copy;
+				}
+			}
+
+			else {
+				arr[j] = copy;
+				break;
+			}
+
+		}
+
+	}
+
+
+}

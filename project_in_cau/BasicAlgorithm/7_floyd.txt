@@ -1,0 +1,124 @@
+//20113574 ¼³Çö¼ö//
+
+#include <iostream>
+#include <time.h>
+#include <string.h>
+
+#define MIN(X,Y) ((X) < (Y) ? (X) : (Y))  
+#define infin 1000
+
+using namespace std;
+
+void floyd(int n, const int W[][6], int D[][6]);
+void floyd2(int n, const int W[][6], int D[][6] , int P[][6]);
+void path(int q, int r, int P[][6]);
+void printArr(int arr[][6]);
+int main() {
+	/////////////////////////////////////////////////////////////////////////////////
+	int W[6][6] = { 0,0,0,0,0,0,
+		            0,                  0  , 1     , infin , 1     , 5,
+		            0,                  9  , 0     , 3     , 2     , infin,
+		            0,                infin, infin , 0     , 4     , infin,
+		            0,                infin, infin , 2     , 0     , 3,
+	                    0,                  3  , infin , infin , infin , 0,
+	};
+
+	int D[6][6];
+	int P[6][6];
+	//////////////////////////////////////////////////////////////////////////////////
+
+
+	floyd(5, W, D);
+
+
+	floyd2(5, W, D,P);
+
+	path(5, 3, P);
+
+	//////////////////////////////////////////////////////////////////////////////////
+
+	//printArr(P);
+
+
+
+
+	///////////////////////////////////////////////////////////////////////////////////
+	return 0;
+}
+
+
+void floyd(int n , const int W[][6] , int D[][6] ) {
+	
+
+	for (int i = 1; i <= 5; i++)
+		for (int j = 1; j <= 5; j++)
+			D[i][j] = W[i][j];
+
+
+
+	for (int k = 1; k <= n; k++)
+		for (int i = 1; i <= n; i++)
+			for (int j = 1; j <= n; j++)
+				D[i][j] = MIN(D[i][j], D[i][k] + D[k][j]);
+
+
+
+
+}
+
+
+void floyd2(int n, const int W[][6], int D[][6], int P[][6]) {
+	
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= n; j++)
+			P[i][j] = 0;
+
+	for (int i = 1; i <= 5; i++)
+		for (int j = 1; j <= 5; j++)
+			D[i][j] = W[i][j];
+
+
+	for (int k = 1; k <= n; k++)
+		for (int i = 1; i <= n; i++)
+			for (int j = 1; j <= n; j++)
+				if ((D[i][k] + D[k][j]) < D[i][j]) {
+					P[i][j] = k;
+					D[i][j] = D[i][k] + D[k][j];
+				}
+
+}
+
+
+
+void path(int q, int r,int P[][6]) {
+
+
+	
+
+	if (P[q][r] != 0) {
+		
+		path(q, P[q][r],P);
+		cout << " -> " << P[q][r];
+		path(P[q][r], r,P);
+	}
+
+	
+}
+
+
+
+
+void printArr(int arr[][6]) {
+
+	int jj = 0;
+	for (int i = 1; i <= 5; i++)
+		for (int j = 1; j <= 5; j++) {
+			cout << arr[i][j] << " ";
+			jj++;
+			if (arr[i][j] < 10) cout << " ";
+			if ((jj % 5) == 0) cout << endl;
+		}
+
+	cout << endl << endl; 
+}
+
